@@ -32,3 +32,7 @@ form.login_form {
     height: 400
 
 }
+
+label.error {
+    color: brown;
+}
