@@ -28,15 +28,17 @@ def odd_even(num):
     return render_template('index_jinja.html', number=int(num))
 
 
-@app.route('/carousel')
-def carousel():
-    path = os.path.join('static', 'carousel')
-    images = [os.path.join(path, img) for img in os.listdir(path)]
-    # чтобы убедиться, что картинки доступны можно их посмотреть
-    # for img in images:
-    #     opened_image = Image.open(img)
-    #     opened_image.show()
-    return render_template('carousel_bootstrap.html', img=images)
+@app.route('/carousel/<user_id>')
+def carousel(user_id):
+    if user_id == 'super_secret_user_id':
+        path = os.path.join('static', 'carousel')
+        images = ['/' + os.path.join(path, img) for img in os.listdir(path)]
+        # чтобы убедиться, что картинки доступны можно их посмотреть
+        # for img in images:
+        #     opened_image = Image.open(img)
+        #     opened_image.show()
+        return render_template('carousel_bootstrap.html', img=images)
+    return redirect('/login')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -44,7 +46,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         if form.username.data == '1' and form.password.data == '1':
-            return redirect('/carousel')
+            return redirect('/carousel/super_secret_user_id')
         else:
             form.error.text = 'Неверный логин или пароль'
     return render_template('login.html', title='Авторизация', form=form)
